@@ -47,9 +47,6 @@ services:
       - /var/media/data:/media/data
     ports:
       - 8989:8989
-    links:
-      - jackett
-      - transmission
     restart: unless-stopped
     network_mode: bridge
 
@@ -65,9 +62,6 @@ services:
       - /var/media/data:/media/data
     ports:
       - 7878:7878
-    links:
-      - jackett
-      - transmission
     restart: unless-stopped
     network_mode: bridge
 
@@ -83,9 +77,6 @@ services:
       - /var/media/data:/media/data
     ports:
       - 6767:6767
-    links:
-      - sonarr
-      - radarr
     restart: unless-stopped
     network_mode: bridge
 
@@ -101,12 +92,6 @@ services:
     ports:
       - 80:80
       - 443:443
-    links:
-      - transmission
-      - sonarr
-      - radarr
-      - bazarr
-      - jackett
     restart: unless-stopped
     network_mode: bridge
 
@@ -128,8 +113,6 @@ services:
       - "8081:80/tcp"
     environment:
       TZ: 'Asia/Jakarta'
-    links:
-      - cloudflared
     volumes:
       - '/storage/pihole/config/:/etc/pihole/'
       - '/storage/pihole/dnsmasq.d/:/etc/dnsmasq.d/'
