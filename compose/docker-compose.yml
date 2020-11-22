@@ -133,10 +133,39 @@ services:
       # - /opt/vc/lib:/opt/vc/lib
     ports:
       - 8096:8096
-    # devices:
-    #   - /dev/vcsm:/dev/vcsm
-    #   - /dev/vchiq:/dev/vchiq
-    tty: true
-    stdin_open: true
+    restart: unless-stopped
+    network_mode: bridge
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - /storage/prometheus/data:/prometheus
+      - /storage/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - 9191:9090
+    restart: unless-stopped
+    network_mode: bridge
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    volumes:
+      - /storage/grafana/data:/var/lib/grafana
+    ports:
+      - 9300:3000
+    restart: unless-stopped
+    network_mode: bridge
+
+  cadvisor:
+    image: zcube/cadvisor:latest
+    container_name: cadvisor
+    ports:
+    - 9292:8080
+    volumes:
+    - /:/rootfs:ro
+    - /var/run:/var/run:rw
+    - /sys:/sys:ro
+    - /var/lib/docker/:/var/lib/docker:ro
     restart: unless-stopped
     network_mode: bridge
