@@ -118,3 +118,25 @@ services:
       - '/storage/pihole/dnsmasq.d/:/etc/dnsmasq.d/'
     restart: unless-stopped
     network_mode: bridge
+
+  jellyfin:
+    image: linuxserver/jellyfin
+    container_name: jellyfin
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Jakarta
+    volumes:
+      - /storage/jellyfin:/config
+      - /var/media/data/Series:/data/tvshows
+      - /var/media/data/Movies/:/data/movies
+      # - /opt/vc/lib:/opt/vc/lib
+    ports:
+      - 8096:8096
+    # devices:
+    #   - /dev/vcsm:/dev/vcsm
+    #   - /dev/vchiq:/dev/vchiq
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+    network_mode: bridge
