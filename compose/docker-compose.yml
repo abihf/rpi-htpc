@@ -159,6 +159,9 @@ services:
 
   cadvisor:
     image: zcube/cadvisor:latest
+    command: 
+      - --docker_only=true
+      - --max_procs=1
     container_name: cadvisor
     ports:
     - 9292:8080
