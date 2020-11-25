@@ -66,7 +66,7 @@ services:
     network_mode: bridge
 
   bazarr:
-    image: linuxserver/bazarr
+    image: linuxserver/bazarr:development
     container_name: bazarr
     environment:
       - PUID=1000
@@ -92,30 +92,6 @@ services:
     ports:
       - 80:80
       - 443:443
-    restart: unless-stopped
-    network_mode: bridge
-
-  cloudflared:
-    container_name: cloudflared
-    image: visibilityspots/cloudflared:arm
-    ports:
-      - "5054:5054/udp"
-    restart: unless-stopped
-    network_mode: bridge
-
-  pihole:
-    container_name: pihole
-    image: pihole/pihole:latest
-    ports:
-      - "53:53/tcp"
-      - "53:53/udp"
-      - "67:67/udp"
-      - "8081:80/tcp"
-    environment:
-      TZ: 'Asia/Jakarta'
-    volumes:
-      - '/storage/pihole/config/:/etc/pihole/'
-      - '/storage/pihole/dnsmasq.d/:/etc/dnsmasq.d/'
     restart: unless-stopped
     network_mode: bridge
 
