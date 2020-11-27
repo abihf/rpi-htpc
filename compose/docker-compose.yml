@@ -20,6 +20,21 @@ services:
     restart: unless-stopped
     network_mode: bridge
 
+  sabnzbd:
+    image: linuxserver/sabnzbd
+    container_name: sabnzbd
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Jakarta
+    volumes:
+      - /storage/sabnzbd:/config
+      - /var/media/data:/media/data
+    ports:
+      - 8765:8080
+    restart: unless-stopped
+    network_mode: bridge
+
   jackett:
     image: linuxserver/jackett
     container_name: jackett
@@ -146,5 +161,14 @@ services:
     - /var/run:/var/run:rw
     - /sys:/sys:ro
     - /var/lib/docker/:/var/lib/docker:ro
+    restart: unless-stopped
+    network_mode: bridge
+
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /storage/.docker/config.json:/config.json
     restart: unless-stopped
     network_mode: bridge
