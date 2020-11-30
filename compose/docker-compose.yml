@@ -66,7 +66,7 @@ services:
     network_mode: bridge
 
   radarr:
-    image: linuxserver/radarr:arm32v7-nightly
+    image: linuxserver/radarr:latest
     container_name: radarr
     environment:
       - PUID=1000
@@ -92,21 +92,6 @@ services:
       - /var/media/data:/media/data
     ports:
       - 6767:6767
-    restart: unless-stopped
-    network_mode: bridge
-
-  heimdall:
-    image: linuxserver/heimdall
-    container_name: heimdall
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Asia/Jakarta
-    volumes:
-      - /storage/heimdall:/config
-    ports:
-      - 80:80
-      - 443:443
     restart: unless-stopped
     network_mode: bridge
 
@@ -170,5 +155,21 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /storage/.docker/config.json:/config.json
+    restart: unless-stopped
+    network_mode: bridge
+
+  organizr:
+    image: organizr/organizr:latest
+    container_name: organizr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Jakarta
+      - fpm=true
+      - branch=v2-master
+    ports:
+    - 80:80
+    volumes:
+      - /storage/organizr:/config
     restart: unless-stopped
     network_mode: bridge
