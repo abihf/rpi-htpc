@@ -51,7 +51,7 @@ services:
     network_mode: bridge
 
   sonarr:
-    image: linuxserver/sonarr:preview
+    image: linuxserver/sonarr:develop
     container_name: sonarr
     environment:
       - PUID=1000
@@ -95,22 +95,6 @@ services:
     restart: unless-stopped
     network_mode: bridge
 
-  jellyfin:
-    image: linuxserver/jellyfin
-    container_name: jellyfin
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Asia/Jakarta
-    volumes:
-      - /storage/jellyfin:/config
-      - /var/media/data/Series:/data/tvshows
-      - /var/media/data/Movies/:/data/movies
-      # - /opt/vc/lib:/opt/vc/lib
-    ports:
-      - 8096:8096
-    restart: unless-stopped
-    network_mode: bridge
 
   prometheus:
     image: prom/prometheus
@@ -130,22 +114,6 @@ services:
       - /storage/grafana/data:/var/lib/grafana
     ports:
       - 9300:3000
-    restart: unless-stopped
-    network_mode: bridge
-
-  cadvisor:
-    image: zcube/cadvisor:latest
-    command: 
-      - --docker_only=true
-      - --max_procs=1
-    container_name: cadvisor
-    ports:
-    - 9292:8080
-    volumes:
-    - /:/rootfs:ro
-    - /var/run:/var/run:rw
-    - /sys:/sys:ro
-    - /var/lib/docker/:/var/lib/docker:ro
     restart: unless-stopped
     network_mode: bridge
 
@@ -173,3 +141,18 @@ services:
       - /storage/organizr:/config
     restart: unless-stopped
     network_mode: bridge
+
+  plex:
+    image: linuxserver/plex
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - VERSION=docker
+      - UMASK_SET=022 #optional
+      # - PLEX_CLAIM= #optional
+    volumes:
+      - /storage/plex:/config
+      - /var/media/data:/media/data
+    restart: unless-stopped
