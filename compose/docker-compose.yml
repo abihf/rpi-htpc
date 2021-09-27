@@ -4,8 +4,6 @@ services:
     image: linuxserver/transmission:latest
     container_name: transmission
     environment:
-      - PUID=1000
-      - PGID=1000
       - TZ=Asia/Jakarta
       - USER=trans #optional
       - PASS=mission #optional
@@ -24,8 +22,6 @@ services:
     image: linuxserver/sabnzbd
     container_name: sabnzbd
     environment:
-      - PUID=1000
-      - PGID=1000
       - TZ=Asia/Jakarta
     volumes:
       - /storage/sabnzbd:/config
@@ -39,8 +35,6 @@ services:
     image: linuxserver/jackett
     container_name: jackett
     environment:
-      - PUID=1000
-      - PGID=1000
       - TZ=Asia/Jakarta
     volumes:
       - /storage/jackett:/config
@@ -51,11 +45,9 @@ services:
     network_mode: bridge
 
   sonarr:
-    image: linuxserver/sonarr:develop
+    image: linuxserver/sonarr:preview
     container_name: sonarr
     environment:
-      - PUID=1000
-      - PGID=1000
       - TZ=Asia/Jakarta
     volumes:
       - /storage/sonarr:/config
@@ -69,8 +61,6 @@ services:
     image: linuxserver/radarr:latest
     container_name: radarr
     environment:
-      - PUID=1000
-      - PGID=1000
       - TZ=Asia/Jakarta
     volumes:
       - /storage/radarr:/config
@@ -84,8 +74,6 @@ services:
     image: linuxserver/bazarr:development
     container_name: bazarr
     environment:
-      - PUID=1000
-      - PGID=1000
       - TZ=Asia/Jakarta
     volumes:
       - /storage/bazarr:/config
@@ -94,7 +82,6 @@ services:
       - 6767:6767
     restart: unless-stopped
     network_mode: bridge
-
 
   prometheus:
     image: prom/prometheus
@@ -112,6 +99,7 @@ services:
     container_name: grafana
     volumes:
       - /storage/grafana/data:/var/lib/grafana
+      - /storage/grafana/grafana.ini:/etc/grafana/grafana.ini
     ports:
       - 9300:3000
     restart: unless-stopped
@@ -126,31 +114,12 @@ services:
     restart: unless-stopped
     network_mode: bridge
 
-  organizr:
-    image: organizr/organizr:latest
-    container_name: organizr
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Asia/Jakarta
-      - fpm=true
-      - branch=v2-master
-    ports:
-    - 80:80
-    volumes:
-      - /storage/organizr:/config
-    restart: unless-stopped
-    network_mode: bridge
-
   plex:
     image: linuxserver/plex
     container_name: plex
     network_mode: host
     environment:
-      - PUID=1000
-      - PGID=1000
       - VERSION=docker
-      - UMASK_SET=022 #optional
       # - PLEX_CLAIM= #optional
     volumes:
       - /storage/plex:/config
